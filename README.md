@@ -72,7 +72,6 @@ if you're already using Koin on your application, you can call init on your appl
 ```
 
 - To execute check version you can call this static method
--
 ```kotlin
 
     fun check(activity: FragmentActivity)
