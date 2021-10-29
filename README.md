@@ -68,7 +68,7 @@ class App: Application() {
 if you're already using Koin on your application, you can call init on your application using this method
 ```kotlin
     fun init(baseUrl: String, koin: KoinApplication,
-                 delegate: CheckAppVersionDelegate)
+             delegate: CheckAppVersionDelegate)
 ```
 
 - To execute check version you can call this static method
@@ -81,3 +81,11 @@ if you're already using Koin on your application, you can call init on your appl
     fun check(activity: FragmentActivity, appVersion: String)
 
 ```
+
+### Api Response
+
+Your api response must follow this format
+```json
+{"status":"01","message":"success","data":{"id":2,"description":"Force Update","version":"0.0.0","previousVersion":"3.6.0","deviceType":"ANDROID","forceUpdate":true},"timestamp":"2021-10-29T01:12:19.798+00:00"}
+```
+
