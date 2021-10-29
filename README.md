@@ -28,7 +28,7 @@ dependencies {
 </application>
 ```
 
-- On application oncreate, Initialize the tracker with call Tracker.init()
+- On application oncreate, Initialize the checkappversion with call CheckAppVersion.init()
 
 ```kotlin
 class App: Application() {
