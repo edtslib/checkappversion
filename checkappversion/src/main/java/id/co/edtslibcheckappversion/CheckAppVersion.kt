@@ -83,15 +83,15 @@ class CheckAppVersion private constructor(): KoinComponent {
             instance?.viewModel?.get(appVersion)?.observe(activity, {
                 when(it.status) {
                     Result.Status.LOADING -> {
-                        delegate?.onLoading()
+                        delegate?.onLoading(activity)
                     }
-                    Result.Status.ERROR -> delegate?.onError(it.code, it.message)
-                    Result.Status.UNAUTHORIZED -> delegate?.onUnAuthorize()
+                    Result.Status.ERROR -> delegate?.onError(activity, it.code, it.message)
+                    Result.Status.UNAUTHORIZED -> delegate?.onUnAuthorize(activity)
                     Result.Status.SUCCESS -> {
                         when(it.data) {
-                            VersionCompareResult.MustUpdate -> delegate?.onAppMustUpdate()
-                            VersionCompareResult.Update -> delegate?.onAppOptionalUpdate()
-                            VersionCompareResult.Newer -> delegate?.onAppVersionLatest()
+                            VersionCompareResult.MustUpdate -> delegate?.onAppMustUpdate(activity)
+                            VersionCompareResult.Update -> delegate?.onAppOptionalUpdate(activity)
+                            VersionCompareResult.Newer -> delegate?.onAppVersionLatest(activity)
                         }
                     }
                 }
