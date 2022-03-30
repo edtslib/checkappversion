@@ -16,7 +16,7 @@ class Repository(private val localDataSource: VersionLocalDataSource,
                 Date().time <= cached.lastCheck!!+interval
 
         if (! isCached) {
-            emit(Result.loading<VersionCompareResult?>())
+            emit(Result.loading<VersionResponse?>())
             val response = remoteDataSource.get()
             when (response.status) {
                 Result.Status.SUCCESS -> {
@@ -31,41 +31,42 @@ class Repository(private val localDataSource: VersionLocalDataSource,
 
                         when {
                             "0.0.0" == response.data.data?.version -> {
-                                emit(Result.success(VersionCompareResult.MustUpdate))
+                                emit(Result.success(VersionResponse(VersionCompareResult.MustUpdate, result.message)))
                             }
-                            result == VersionCompareResult.Update -> {
+                            result.result == VersionCompareResult.Update -> {
                                 if (response.data.data?.version == cached.lastShow) {
                                     cached.lastCheck = Date().time
 
-                                    emit(Result.success(VersionCompareResult.Newer))
+                                    emit(Result.success(VersionResponse(VersionCompareResult.Newer, result.message)))
                                 } else {
-                                    emit(Result.success(result))
+
+                                    emit(Result.success(VersionResponse(VersionCompareResult.Update, result.message)))
+
                                 }
-                                cached.lastShow = response.data.data?.version
                             }
                             else -> {
-                                if (result == VersionCompareResult.Newer) {
+                                if (result.result == VersionCompareResult.Newer) {
                                     cached.lastCheck = Date().time
                                 }
-                                emit(Result.success(result))
+                                emit(Result.success(VersionResponse(result.result, result.message)))
                             }
                         }
 
                         localDataSource.save(cached)
                     } else {
-                        emit(Result.error<VersionCompareResult?>(response.code, response.message))
+                        emit(Result.error<VersionResponse?>(response.code, response.message))
                     }
                 }
                 Result.Status.UNAUTHORIZED -> {
-                    emit(Result.unauthorized<VersionCompareResult?>())
+                    emit(Result.unauthorized<VersionResponse?>())
                 }
                 else -> {
-                    emit(Result.error<VersionCompareResult?>(response.code, response.message))
+                    emit(Result.error<VersionResponse?>(response.code, response.message))
                 }
             }
         }
         else {
-            emit(Result.success(VersionCompareResult.Newer))
+            emit(Result.success(VersionResponse(VersionCompareResult.Newer, null)))
         }
     }
 }

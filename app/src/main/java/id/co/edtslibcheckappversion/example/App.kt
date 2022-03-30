@@ -25,15 +25,15 @@ class App: Application() {
                     Log.d("abah", "abah onUnAuthorize")
                 }
 
-                override fun onAppMustUpdate(fragmentActivity: FragmentActivity) {
+                override fun onAppMustUpdate(fragmentActivity: FragmentActivity, message: String?) {
                     Log.d("abah", "abah onAppMustUpdate")
                 }
 
-                override fun onAppOptionalUpdate(fragmentActivity: FragmentActivity) {
+                override fun onAppOptionalUpdate(fragmentActivity: FragmentActivity, message: String?) {
                     Log.d("abah", "abah onAppOptionalUpdate")
                 }
 
-                override fun onAppVersionLatest(fragmentActivity: FragmentActivity) {
+                override fun onAppVersionLatest(fragmentActivity: FragmentActivity, message: String?) {
                     Log.d("abah", "abah onAppVersionLatest")
                 }
             })

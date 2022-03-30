@@ -1,16 +1,25 @@
 package id.co.edtslibcheckappversion.data
 
 import java.lang.NumberFormatException
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 data class VersionItem(
     val version: String,
-    val forceUpdate: Boolean?
+    val warningAlert: Boolean?,
+    val warningAlertStartDate: String?,
+    val warningAlertDesc: String?,
+    val forceAlert: Boolean?,
+    val forceAlertStartDate: String?,
+    val forceAlertDesc: String?
+
 ) {
     companion object {
-        fun checkVersion(app:String, versionItem: VersionItem?): VersionCompareResult {
+        fun checkVersion(app:String, versionItem: VersionItem?): VersionResponse {
             if (versionItem == null)
             {
-                return VersionCompareResult.Newer
+                return VersionResponse(VersionCompareResult.Newer, null)
             }
 
             // make version to be x.x.x
@@ -23,22 +32,41 @@ data class VersionItem(
                         val sver = serverVersions[i].toInt()
                         val aver = appVersions[i].toInt()
                         if (aver < sver) {
-                            return if (versionItem.forceUpdate != null && versionItem.forceUpdate) VersionCompareResult.MustUpdate
-                            else VersionCompareResult.Update
+                            if (versionItem.forceAlert == true && versionItem.forceAlertDesc != null
+                                && versionItem.forceAlertStartDate != null) {
+                                val date = parseDate(versionItem.forceAlertStartDate)
+                                val now = Date()
+                                if (date != null && now.time >= date.time) {
+                                    return VersionResponse(VersionCompareResult.MustUpdate,
+                                        versionItem.forceAlertDesc)
+                                }
+                            }
+
+                            if (versionItem.warningAlert == true && versionItem.warningAlertDesc != null
+                                && versionItem.warningAlertStartDate != null) {
+                                val date = parseDate(versionItem.warningAlertStartDate)
+                                val now = Date()
+                                if (date != null && now.time >= date.time) {
+                                    return VersionResponse(VersionCompareResult.Update,
+                                        versionItem.warningAlertDesc)
+                                }
+                            }
+
+                            return VersionResponse(VersionCompareResult.Newer, null)
                         }
                         else
                             if (aver > sver) {
-                                return VersionCompareResult.Newer
+                                return VersionResponse(VersionCompareResult.Newer, null)
                             }
                     }
                     catch (e: NumberFormatException) {
-                        VersionCompareResult.MustUpdate
+                        return VersionResponse(VersionCompareResult.MustUpdate, "Format version salah")
                     }
                 }
 
             }
 
-            return VersionCompareResult.Newer
+            return VersionResponse(VersionCompareResult.Newer, null)
 
         }
 
@@ -58,6 +86,17 @@ data class VersionItem(
             }
 
             return result
+        }
+
+        private fun parseDate(date: String): Date? {
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
+                Locale.getDefault())
+            return try {
+                dateFormat.parse(date)
+            }
+            catch (e: ParseException) {
+                null
+            }
         }
     }
 }

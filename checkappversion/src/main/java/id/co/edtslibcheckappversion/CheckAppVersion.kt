@@ -51,7 +51,7 @@ class CheckAppVersion private constructor(): KoinComponent {
 
         fun init(baseUrl: String, koin: KoinApplication,
                  delegate: CheckAppVersionDelegate) {
-            CheckAppVersion.endPoint = baseUrl
+            endPoint = baseUrl
             CheckAppVersion.delegate = delegate
 
             koin.modules(listOf(
@@ -80,22 +80,25 @@ class CheckAppVersion private constructor(): KoinComponent {
         }
 
         fun check(activity: FragmentActivity, appVersion: String) {
-            instance?.viewModel?.get(appVersion)?.observe(activity, {
-                when(it.status) {
+            instance?.viewModel?.get(appVersion)?.observe(activity) {
+                when (it.status) {
                     Result.Status.LOADING -> {
                         delegate?.onLoading(activity)
                     }
                     Result.Status.ERROR -> delegate?.onError(activity, it.code, it.message)
                     Result.Status.UNAUTHORIZED -> delegate?.onUnAuthorize(activity)
                     Result.Status.SUCCESS -> {
-                        when(it.data) {
-                            VersionCompareResult.MustUpdate -> delegate?.onAppMustUpdate(activity)
-                            VersionCompareResult.Update -> delegate?.onAppOptionalUpdate(activity)
-                            VersionCompareResult.Newer -> delegate?.onAppVersionLatest(activity)
+                        when (it.data?.result) {
+                            VersionCompareResult.MustUpdate -> delegate?.onAppMustUpdate(activity,
+                                it.data.message)
+                            VersionCompareResult.Update -> delegate?.onAppOptionalUpdate(activity,
+                                it.data.message)
+                            VersionCompareResult.Newer -> delegate?.onAppVersionLatest(activity,
+                                it.data.message)
                         }
                     }
                 }
-            })
+            }
         }
 
     }
