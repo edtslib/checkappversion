@@ -25,7 +25,7 @@ val sharedPreferencesModule = module {
 
             EncryptedSharedPreferences.create(
                 get(),
-                "edts_tracker_secret_shared_prefs",
+                "edts_checkappversion_secret_shared_prefs",
                 masterKey,
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
