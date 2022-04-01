@@ -6,10 +6,11 @@ import android.security.keystore.KeyProperties
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.securepreferences.SecurePreferences
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val sharedPreferencesModule = module {
-    single {
+    single(named("appVersionSharePrefs")) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val spec = KeyGenParameterSpec.Builder(
                 MasterKey.DEFAULT_MASTER_KEY_ALIAS,
