@@ -12,7 +12,9 @@ data class VersionItem(
     val warningAlertDesc: String?,
     val forceAlert: Boolean?,
     val forceAlertStartDate: String?,
-    val forceAlertDesc: String?
+    val forceAlertDesc: String?,
+    val forceUpdate: Boolean?,
+    val updateDesc: String?
 
 ) {
     companion object {
@@ -51,6 +53,17 @@ data class VersionItem(
                                         versionItem.warningAlertDesc)
                                 }
                             }
+
+                            if (versionItem.forceUpdate == true) {
+                                return VersionResponse(VersionCompareResult.MustUpdate,
+                                    versionItem.updateDesc)
+                            }
+
+                            if (versionItem.forceUpdate == false) {
+                                return VersionResponse(VersionCompareResult.Update,
+                                    versionItem.updateDesc)
+                            }
+
 
                             return VersionResponse(VersionCompareResult.Newer, null)
                         }
