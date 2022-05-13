@@ -13,11 +13,16 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.context.startKoin
 import java.lang.Exception
+import javax.net.ssl.TrustManagerFactory
 
 class CheckAppVersion private constructor(): KoinComponent {
     private val viewModel: VersionViewModel? by inject()
 
     companion object {
+        var sslDomain = ""
+        var sslPinner = ""
+        var trustManagerFactory: TrustManagerFactory? = null
+
         private var instance: CheckAppVersion? = null
 
         var endPoint = ""

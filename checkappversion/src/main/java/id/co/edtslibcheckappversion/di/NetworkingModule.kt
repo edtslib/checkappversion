@@ -16,7 +16,10 @@ val networkingModule = module {
     single(named("checkappversion")) { provideRetrofit(get(named("checkappversionOkHttp")), get()) }
 }
 
-private fun provideOkHttpClient(): OkHttpClient = UnsafeOkHttpClient().get()
+private fun provideOkHttpClient(): OkHttpClient = if ((CheckAppVersion.sslDomain.isNotEmpty() &&
+            CheckAppVersion.sslPinner.isNotEmpty())
+    || CheckAppVersion.trustManagerFactory != null)
+    SafeOkHttpClient().get() else UnsafeOkHttpClient().get()
 
 private fun provideGson(): Gson = Gson()
 
