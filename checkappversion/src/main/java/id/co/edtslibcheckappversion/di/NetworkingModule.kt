@@ -9,11 +9,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val networkingModule = module {
-    single { provideOkHttpClient() }
+    single(named("checkappversionOkHttpClient")) { provideOkHttpClient() }
     single { provideGson() }
     single { provideGsonConverterFactory(get()) }
 
-    single(named("checkappversion")) { provideRetrofit(get(), get()) }
+    single(named("checkappversion")) { provideRetrofit(get(named("checkappversionOkHttpClient")), get()) }
 }
 
 private fun provideOkHttpClient(): OkHttpClient = UnsafeOkHttpClient().get()
