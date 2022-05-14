@@ -49,6 +49,7 @@ val sharedPreferencesModule = module {
                 }
             }
             catch (e: Exception) {
+
                 PreferenceManager.getDefaultSharedPreferences(androidContext())
             }
             catch (e: NoClassDefFoundError) {
