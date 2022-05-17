@@ -31,15 +31,18 @@ class Repository(private val localDataSource: VersionLocalDataSource,
 
                         when {
                             "0.0.0" == response.data.data?.version -> {
+                                localDataSource.clear()
                                 emit(Result.success(VersionResponse(VersionCompareResult.MustUpdate, result.message)))
                             }
                             result.result == VersionCompareResult.Update -> {
                                 if (response.data.data?.version == cached.lastShow) {
                                     cached.lastCheck = Date().time
 
+                                    localDataSource.save(cached)
                                     emit(Result.success(VersionResponse(VersionCompareResult.Newer, result.message)))
                                 } else {
 
+                                    localDataSource.save(cached)
                                     emit(Result.success(VersionResponse(VersionCompareResult.Update, result.message)))
 
                                 }
@@ -47,12 +50,14 @@ class Repository(private val localDataSource: VersionLocalDataSource,
                             else -> {
                                 if (result.result == VersionCompareResult.Newer) {
                                     cached.lastCheck = Date().time
+                                    localDataSource.save(cached)
+                                }
+                                else {
+                                    localDataSource.clear()
                                 }
                                 emit(Result.success(VersionResponse(result.result, result.message)))
                             }
                         }
-
-                        localDataSource.save(cached)
                     } else {
                         emit(Result.error<VersionResponse?>(response.code, response.message))
                     }
