@@ -1,6 +1,5 @@
 package id.co.edtslibcheckappversion.data
 
-import android.app.Application
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

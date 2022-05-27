@@ -9,6 +9,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        CheckAppVersion.check(this)
+        CheckAppVersion.check(this, "1.0.0")
     }
 }

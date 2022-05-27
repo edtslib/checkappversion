@@ -16,7 +16,7 @@ class Repository(private val localDataSource: VersionLocalDataSource,
                 Date().time <= cached.lastCheck!!+interval
 
         if (! isCached) {
-            emit(Result.loading<VersionResponse?>())
+            emit(Result.loading())
             val response = remoteDataSource.get()
             when (response.status) {
                 Result.Status.SUCCESS -> {
@@ -59,14 +59,14 @@ class Repository(private val localDataSource: VersionLocalDataSource,
                             }
                         }
                     } else {
-                        emit(Result.error<VersionResponse?>(response.code, response.message))
+                        emit(Result.error(response.code, response.message))
                     }
                 }
                 Result.Status.UNAUTHORIZED -> {
-                    emit(Result.unauthorized<VersionResponse?>())
+                    emit(Result.unauthorized())
                 }
                 else -> {
-                    emit(Result.error<VersionResponse?>(response.code, response.message))
+                    emit(Result.error(response.code, response.message))
                 }
             }
         }

@@ -7,7 +7,7 @@ import java.io.IOException
 /**
  * A {@see RequestInterceptor} that adds an auth token to requests
  */
-class AuthInterceptor() : Interceptor {
+class AuthInterceptor : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
