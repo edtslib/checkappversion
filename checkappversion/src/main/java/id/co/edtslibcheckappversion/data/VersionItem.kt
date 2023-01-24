@@ -1,19 +1,37 @@
 package id.co.edtslibcheckappversion.data
 
+import com.google.gson.annotations.SerializedName
 import java.lang.NumberFormatException
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
 data class VersionItem(
+    @field:SerializedName("version")
     val version: String,
+
+    @field:SerializedName("warningAlert")
     val warningAlert: Boolean?,
+
+    @field:SerializedName("warningAlertStartDate")
     val warningAlertStartDate: String?,
+
+    @field:SerializedName("warningAlertDesc")
     val warningAlertDesc: String?,
+
+    @field:SerializedName("forceAlert")
     val forceAlert: Boolean?,
+
+    @field:SerializedName("forceAlertStartDate")
     val forceAlertStartDate: String?,
+
+    @field:SerializedName("forceAlertDesc")
     val forceAlertDesc: String?,
+
+    @field:SerializedName("forceUpdate")
     val forceUpdate: Boolean?,
+
+    @field:SerializedName("updateDesc")
     val updateDesc: String?
 
 ) {
