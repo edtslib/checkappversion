@@ -39,7 +39,7 @@ class App: Application() {
                     message: String?,
                     serverVersion: VersionItem?
                 ) {
-                    Log.d("abah", "abah onAppOptionalUpdate")
+                    Log.d("abah", "abah  onAppOptionalUpdate")
                 }
 
                 override fun onAppVersionLatest(
