@@ -32,18 +32,27 @@ class Repository(private val localDataSource: VersionLocalDataSource,
                         when {
                             "0.0.0" == response.data.data?.version -> {
                                 localDataSource.clear()
-                                emit(Result.success(VersionResponse(VersionCompareResult.MustUpdate, result.message)))
+                                emit(Result.success(VersionResponse(
+                                    result = VersionCompareResult.MustUpdate,
+                                    message = result.message,
+                                    versionItem = response.data.data)))
                             }
                             result.result == VersionCompareResult.Update -> {
                                 if (response.data.data?.version == cached.lastShow) {
                                     cached.lastCheck = Date().time
 
                                     localDataSource.save(cached)
-                                    emit(Result.success(VersionResponse(VersionCompareResult.Newer, result.message)))
+                                    emit(Result.success(VersionResponse(
+                                        result = VersionCompareResult.Newer,
+                                        message = result.message,
+                                        versionItem = response.data.data)))
                                 } else {
 
                                     localDataSource.save(cached)
-                                    emit(Result.success(VersionResponse(VersionCompareResult.Update, result.message)))
+                                    emit(Result.success(VersionResponse(
+                                        result = VersionCompareResult.Update,
+                                        message = result.message,
+                                        versionItem = response.data.data)))
 
                                 }
                             }
@@ -55,7 +64,10 @@ class Repository(private val localDataSource: VersionLocalDataSource,
                                 else {
                                     localDataSource.clear()
                                 }
-                                emit(Result.success(VersionResponse(result.result, result.message)))
+                                emit(Result.success(VersionResponse(
+                                    result = result.result,
+                                    message = result.message,
+                                    versionItem = response.data.data)))
                             }
                         }
                     } else {
@@ -71,7 +83,10 @@ class Repository(private val localDataSource: VersionLocalDataSource,
             }
         }
         else {
-            emit(Result.success(VersionResponse(VersionCompareResult.Newer, null)))
+            emit(Result.success(VersionResponse(
+                result = VersionCompareResult.Newer,
+                message = null,
+                versionItem = cached?.version)))
         }
     }
 }

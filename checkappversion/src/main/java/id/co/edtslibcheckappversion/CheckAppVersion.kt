@@ -73,18 +73,18 @@ class CheckAppVersion private constructor(): KoinComponent {
             }
         }
 
-        fun check(activity: FragmentActivity) {
+        fun check(activity: FragmentActivity, latestCallback: () -> Unit) {
             try {
                 val info = activity.packageManager.getPackageInfo(activity.packageName, 0)
-                check(activity, info.versionName)
+                check(activity, info.versionName, latestCallback)
             }
             catch (e: Exception) {
-                check(activity, "0.0.0")
+                check(activity, "0.0.0", latestCallback)
             }
 
         }
 
-        fun check(activity: FragmentActivity, appVersion: String) {
+        fun check(activity: FragmentActivity, appVersion: String, latestCallback: () -> Unit) {
             instance?.viewModel?.get(appVersion)?.observe(activity) {
                 when (it.status) {
                     Result.Status.LOADING -> {
@@ -95,11 +95,11 @@ class CheckAppVersion private constructor(): KoinComponent {
                     Result.Status.SUCCESS -> {
                         when (it.data?.result) {
                             VersionCompareResult.MustUpdate -> delegate?.onAppMustUpdate(activity,
-                                it.data.message)
+                                it.data.message, it.data.versionItem)
                             VersionCompareResult.Update -> delegate?.onAppOptionalUpdate(activity,
-                                it.data.message)
+                                it.data.message, it.data.versionItem)
                             VersionCompareResult.Newer -> delegate?.onAppVersionLatest(activity,
-                                it.data.message)
+                                it.data.message, it.data.versionItem, latestCallback)
                         }
                     }
                 }

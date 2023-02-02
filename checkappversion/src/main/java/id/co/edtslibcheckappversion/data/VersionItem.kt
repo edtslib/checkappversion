@@ -39,7 +39,10 @@ data class VersionItem(
         fun checkVersion(app:String, versionItem: VersionItem?): VersionResponse {
             if (versionItem == null)
             {
-                return VersionResponse(VersionCompareResult.Newer, null)
+                return VersionResponse(
+                    result = VersionCompareResult.Newer,
+                    message = null,
+                    versionItem = null)
             }
 
             // make version to be x.x.x
@@ -57,8 +60,10 @@ data class VersionItem(
                                 val date = parseDate(versionItem.forceAlertStartDate)
                                 val now = Date()
                                 if (date != null && now.time >= date.time) {
-                                    return VersionResponse(VersionCompareResult.MustUpdate,
-                                        versionItem.forceAlertDesc)
+                                    return VersionResponse(
+                                        result = VersionCompareResult.MustUpdate,
+                                        message = versionItem.forceAlertDesc,
+                                        versionItem = versionItem)
                                 }
                             }
 
@@ -67,37 +72,55 @@ data class VersionItem(
                                 val date = parseDate(versionItem.warningAlertStartDate)
                                 val now = Date()
                                 if (date != null && now.time >= date.time) {
-                                    return VersionResponse(VersionCompareResult.Update,
-                                        versionItem.warningAlertDesc)
+                                    return VersionResponse(
+                                        result = VersionCompareResult.Update,
+                                        message = versionItem.warningAlertDesc,
+                                        versionItem = versionItem)
                                 }
                             }
 
                             if (versionItem.forceUpdate == true) {
-                                return VersionResponse(VersionCompareResult.MustUpdate,
-                                    versionItem.updateDesc)
+                                return VersionResponse(
+                                    result = VersionCompareResult.MustUpdate,
+                                    message = versionItem.updateDesc,
+                                    versionItem = versionItem)
                             }
 
                             if (versionItem.forceUpdate == false) {
-                                return VersionResponse(VersionCompareResult.Update,
-                                    versionItem.updateDesc)
+                                return VersionResponse(
+                                    result = VersionCompareResult.Update,
+                                    message = versionItem.updateDesc,
+                                    versionItem = versionItem)
                             }
 
 
-                            return VersionResponse(VersionCompareResult.Newer, null)
+                            return VersionResponse(
+                                result = VersionCompareResult.Newer,
+                                message = null,
+                                versionItem = versionItem)
                         }
                         else
                             if (aver > sver) {
-                                return VersionResponse(VersionCompareResult.Newer, null)
+                                return VersionResponse(
+                                    result = VersionCompareResult.Newer,
+                                    message = null,
+                                    versionItem = versionItem)
                             }
                     }
                     catch (e: NumberFormatException) {
-                        return VersionResponse(VersionCompareResult.MustUpdate, "Format version salah")
+                        return VersionResponse(
+                            result = VersionCompareResult.MustUpdate,
+                            message = "Format version salah",
+                            versionItem = versionItem)
                     }
                 }
 
             }
 
-            return VersionResponse(VersionCompareResult.Newer, null)
+            return VersionResponse(
+                result = VersionCompareResult.Newer,
+                message = null,
+                versionItem = versionItem)
 
         }
 
