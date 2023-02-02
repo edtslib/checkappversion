@@ -11,5 +11,5 @@ interface CheckAppVersionDelegate {
     fun onAppOptionalUpdate(fragmentActivity: FragmentActivity, message: String?,
                             serverVersion: VersionItem?)
     fun onAppVersionLatest(fragmentActivity: FragmentActivity, message: String?,
-                           serverVersion: VersionItem?, callback: () -> Unit)
+                           serverVersion: VersionItem?)
 }

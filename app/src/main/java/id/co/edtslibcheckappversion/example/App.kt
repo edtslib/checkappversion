@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import id.co.edtslibcheckappversion.CheckAppVersion
 import id.co.edtslibcheckappversion.data.CheckAppVersionDelegate
+import id.co.edtslibcheckappversion.data.VersionItem
 
 class App: Application() {
     override fun onCreate() {
@@ -25,17 +26,30 @@ class App: Application() {
                     Log.d("abah", "abah onUnAuthorize")
                 }
 
-                override fun onAppMustUpdate(fragmentActivity: FragmentActivity, message: String?) {
+                override fun onAppMustUpdate(
+                    fragmentActivity: FragmentActivity,
+                    message: String?,
+                    serverVersion: VersionItem?
+                ) {
                     Log.d("abah", "abah onAppMustUpdate")
                 }
 
-                override fun onAppOptionalUpdate(fragmentActivity: FragmentActivity, message: String?) {
+                override fun onAppOptionalUpdate(
+                    fragmentActivity: FragmentActivity,
+                    message: String?,
+                    serverVersion: VersionItem?
+                ) {
                     Log.d("abah", "abah onAppOptionalUpdate")
                 }
 
-                override fun onAppVersionLatest(fragmentActivity: FragmentActivity, message: String?) {
+                override fun onAppVersionLatest(
+                    fragmentActivity: FragmentActivity,
+                    message: String?,
+                    serverVersion: VersionItem?
+                ) {
                     Log.d("abah", "abah onAppVersionLatest")
                 }
+
             })
     }
 }

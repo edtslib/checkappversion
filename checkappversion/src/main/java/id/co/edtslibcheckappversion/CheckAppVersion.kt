@@ -98,8 +98,13 @@ class CheckAppVersion private constructor(): KoinComponent {
                                 it.data.message, it.data.versionItem)
                             VersionCompareResult.Update -> delegate?.onAppOptionalUpdate(activity,
                                 it.data.message, it.data.versionItem)
-                            VersionCompareResult.Newer -> delegate?.onAppVersionLatest(activity,
-                                it.data.message, it.data.versionItem, latestCallback)
+                            VersionCompareResult.Newer -> {
+                                delegate?.onAppVersionLatest(
+                                    activity,
+                                    it.data.message, it.data.versionItem
+                                )
+                                latestCallback()
+                            }
                         }
                     }
                 }
