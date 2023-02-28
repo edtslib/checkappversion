@@ -1,5 +1,6 @@
 package id.co.edtslibcheckappversion.data
 
+import id.co.edtslibcheckappversion.CheckAppVersion
 import id.co.edtslibcheckappversion.di.CheckAppVersionApiService
 
 class RemoteDataSource(
@@ -7,6 +8,6 @@ class RemoteDataSource(
 ) : BaseDataSource() {
 
     suspend fun get() =
-        getResult { apiService.get("") }
+        getResult { apiService.get(CheckAppVersion.path) }
 
 }
