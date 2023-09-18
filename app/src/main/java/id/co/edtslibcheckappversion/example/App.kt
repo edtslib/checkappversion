@@ -12,7 +12,8 @@ class App: Application() {
         super.onCreate()
 
         CheckAppVersion.debugging = true
-        CheckAppVersion.init(this, "http://gurihmas-api.sg-edts.co.id/app/version/android/",
+        CheckAppVersion.path = "ANDROID"
+        CheckAppVersion.init(this, "http://172.18.183.15:8081/api/mobile/app-version/",
             object : CheckAppVersionDelegate {
                 override fun onLoading(fragmentActivity: FragmentActivity) {
                     Log.d("abah", "abah onLoading")

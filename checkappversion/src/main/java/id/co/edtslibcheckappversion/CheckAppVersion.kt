@@ -29,6 +29,11 @@ class CheckAppVersion private constructor(): KoinComponent {
         var path = ""
         var debugging = false
         var intervalCached: Int = 3600*10000
+
+        var enableSignature = false
+        var defaultPayload: String? = null
+        var privateKeyFileContent: String? = null
+
         private var delegate: CheckAppVersionDelegate? = null
 
         fun init(application: Application, endPoint: String,
